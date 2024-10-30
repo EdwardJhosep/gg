@@ -27,8 +27,8 @@ Route::get('/admin/home', [MenuAdmin::class, 'index'])->name('admin.home');
 Route::get('/admin/productos', [MenuAdmin::class, 'producto'])->name('admin.productos');
 Route::get('/admin/empleados', [MenuAdmin::class, 'empleados'])->name('admin.empleados');
 Route::get('/admin/ventas', [MenuAdmin::class, 'ventas'])->name('admin.ventas');
-Route::post('/', [MenuAdmin::class, 'logout'])->name('admin.logout'); // Esta es la línea que necesitas
-Route::post('/', [MenuAdmin::class, 'logout'])->name('empleado.logout'); // Esta es la línea que necesitas
+Route::post('/admin/logout', [MenuAdmin::class, 'logout'])->name('admin.logout'); // Esta es la línea que necesitas
+Route::post('/empleado/logout', [MenuAdmin::class, 'logout'])->name('empleado.logout'); // Esta es la línea que necesitas
 
 
 
