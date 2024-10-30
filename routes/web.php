@@ -27,7 +27,8 @@ Route::get('/admin/home', [MenuAdmin::class, 'index'])->name('admin.home');
 Route::get('/admin/productos', [MenuAdmin::class, 'producto'])->name('admin.productos');
 Route::get('/admin/empleados', [MenuAdmin::class, 'empleados'])->name('admin.empleados');
 Route::get('/admin/ventas', [MenuAdmin::class, 'ventas'])->name('admin.ventas');
-Route::post('/admin/logout', [MenuAdmin::class, 'logout'])->name('admin.logout'); // Esta es la línea que necesitas
+Route::post('/', [MenuAdmin::class, 'logout'])->name('admin.logout'); // Esta es la línea que necesitas
+Route::post('/', [MenuAdmin::class, 'logout'])->name('empleado.logout'); // Esta es la línea que necesitas
 
 
 
@@ -45,3 +46,5 @@ Route::post('/ventas/store', [VentaController::class, 'store'])->name('ventas.st
 Route::get('/buscar-venta', [VentaController::class, 'buscarVenta'])->name('buscar.venta');
 
 Route::post('/ventas/confirmar/{id}', [VentaController::class, 'confirmarVenta'])->name('confirmar_venta');
+
+Route::post('/ventas/eliminar/{id}', [VentaController::class, 'destroy'])->name('eliminar_venta');

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -123,6 +124,18 @@
             margin: 20px 0 10px; /* Espacio alrededor del título */
             text-align: left; /* Alinear a la izquierda */
         }
+        .alert-success-custom {
+    background-color: #28a745; /* Color de fondo verde */
+    color: white; /* Color del texto */
+    border-color: #28a745; /* Color del borde */
+}
+
+.alert-danger-custom {
+    background-color: #dc3545; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border-color: #dc3545; /* Color del borde */
+}
+
     </style>
 </head>
 <body>
@@ -147,11 +160,28 @@
                 <i class="fas fa-times"></i>
             </div>
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: white;">Salir</a>
-            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+            <form id="logout-form" action="{{ route('empleado.logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
         </div>
     </div>
+    @if(session('success'))
+    <div class="alert alert-success-custom alert-dismissible fade show" role="alert">
+        <strong>Éxito!</strong> {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger-custom alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
     <div class="container">
         <!-- Tabla de ventas pendientes -->
         <div class="table-title">Ventas Pendientes</div>
@@ -163,6 +193,8 @@
                         <th>Producto</th>
                         <th>Precio</th>
                         <th>Fecha</th>
+                        <th>Cantidad</th>
+                         <th>DNI</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -177,11 +209,18 @@
                                 <td>{{ $venta->product->nombre }}</td>
                                 <td>${{ number_format($venta->total, 2) }}</td>
                                 <td>{{ $venta->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $venta->cantidad}}</td>
+                                <td>{{ $venta->dni }}</td>
                                 <td>{{ $venta->estado }}</td>
                                 <td>
                                     <form action="{{ route('confirmar_venta', $venta->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="confirm-button">Confirmar Venta</button>
+                                    </form>
+                                    <!-- ELIMINAR -->
+                                     <form action="{{ route('eliminar_venta', $venta->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="confirm-button">Eliminar Venta</button>
                                     </form>
                                 </td>
                             </tr>
@@ -222,6 +261,9 @@
             </table>
         </div>
     </div>
+<!-- Scripts de Bootstrap (jQuery y Bootstrap JS) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
     <script>
         // Función para abrir y cerrar el menú

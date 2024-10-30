@@ -101,6 +101,10 @@
             transform: scale(1.05);
         }
 
+        .search-box {
+            margin-bottom: 20px;
+        }
+
         .floating-form {
             position: fixed;
             bottom: 20px;
@@ -118,29 +122,14 @@
             display: block;
         }
 
-        .search-box {
-            margin-bottom: 20px;
+        .chat-box {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
         }
 
-        .chatbot-message {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .chatbot-success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .chatbot-error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .loading-message {
-            background-color: #e2e3e5;
-            color: #856404;
+        .chat-message {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -148,23 +137,24 @@
 
     <!-- Menú de Navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <h2>Hilo Rojo</h2>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <div class="navbar-nav">
-                    <a href="{{ route('inicio') }}" class="nav-link active text-dark">Inicio</a>
-                    <a href="{{ route('productos') }}" class="nav-link text-dark">Compra de Productos</a>
-                    <a href="{{ route('nosotros') }}" class="nav-link text-dark">Acerca de Nosotros</a>
-                    <a href="{{ route('login') }}" class="nav-link text-dark">Login</a>
-                </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <h2>Hilo Rojo</h2>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <div class="navbar-nav">
+                <a href="{{ route('inicio') }}" class="nav-link active text-dark">Inicio</a>
+                <a href="{{ route('productos') }}" class="nav-link text-dark">Compra de Productos</a>
+                <a href="{{ route('nosotros') }}" class="nav-link text-dark">Acerca de Nosotros</a>
+                <a href="{{ route('login') }}" class="nav-link text-dark">Login</a>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <div class="container content">
         @if(session('success'))
@@ -185,9 +175,12 @@
             </div>
         @endif
 
+        <div class="search-box">
+            <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos..." onkeyup="filterProducts()">
+        </div>
         <div class="row" id="productList">
             @foreach($products as $product)
-                <div class="col-lg-4 col-md-6 col-sm-12 product" data-product-id="{{ $product->id }}">
+                <div class="col-lg-4 col-md-6 col-sm-12 product" data-name="{{ strtolower($product->nombre) }}" data-product-id="{{ $product->id }}">
                     <div class="product-card">
                         <h5>{{ $product->nombre }}</h5>
                         <img src="{{ asset('storage/' . $product->imagen) }}" alt="{{ $product->nombre }}" class="img-fluid">
@@ -200,7 +193,7 @@
             @endforeach
         </div>
 
-        <!-- Formulario Flotante para comparar productos -->
+        <!-- Formulario Flotante -->
         <div class="floating-form" id="compareForm">
             <h5>Comparar Producto</h5>
             <form id="formCompare" action="{{ route('ventas.store') }}" method="POST">
@@ -222,16 +215,6 @@
                 <button type="submit" class="btn btn-primary">Enviar</button>
             </form>
         </div>
-
-        <!-- Formulario Flotante para búsqueda -->
-        <div class="floating-form" id="searchForm">
-            <h5>Asitente de compra inteligente</h5>
-            <div class="search-box">
-                <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos..." onkeyup="filterProducts()">
-            </div>
-            <div id="chatbotMessage" class="chatbot-message"></div> <!-- Área para mensajes del chatbot -->
-            <button type="button" class="btn btn-secondary" onclick="closeSearchForm()">Cerrar</button>
-        </div>
     </div>
 
     <!-- Footer -->
@@ -239,94 +222,331 @@
         <p>© 2024 Hilo Rojo. Todos los derechos reservados.</p>
         <a href="#" class="footer-link">Política de privacidad</a>
     </footer>
-    <button class="robot-btn">
-        <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" class="robot-icon" alt="Robot Icon">
-    </button>
-    <button class="whatsapp-btn">
-        <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" class="whatsapp-icon" alt="WhatsApp Icon">
-    </button>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Botón de Robot -->
+    <button class="robot-btn">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" class="robot-icon" alt="Robot">
+    </button>
+
+<!-- Botón de Robot -->
+<button class="robot-btn" onclick="toggleChatbot()">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" class="robot-icon" alt="Robot">
+</button>
+
+<!-- Botón de Robot -->
+<button class="robot-btn" onclick="toggleChatbot()">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" class="robot-icon" alt="Robot">
+</button>
+
+<div class="floating-form" id="chatbot">
+    <button class="btn-close" onclick="closeChatbot()">&times;</button> <!-- Botón de cerrar como X -->
+    <h5>Chatbot</h5>
+    <div class="chat-box" id="chatBox">
+        <!-- Mensajes del chatbot aparecerán aquí -->
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" id="chatInput" class="form-control" placeholder="Escribe un mensaje..." aria-label="Escribe un mensaje...">
+        <button class="btn btn-primary" id="sendButton">Enviar</button>
+    </div>
+</div>
+
+<script>
+// Función para cerrar el formulario del chatbot
+function closeChatbot() {
+    document.getElementById('chatbot').style.display = 'none'; // Ocultar el formulario
+}
+
+// Función para alternar la visibilidad del chatbot
+function toggleChatbot() {
+    var chatbot = document.getElementById('chatbot');
+    if (chatbot.style.display === 'none' || chatbot.style.display === '') {
+        chatbot.style.display = 'block'; // Mostrar el chatbot
+    } else {
+        chatbot.style.display = 'none'; // Ocultar el chatbot
+    }
+}
+</script>
+
+<style>
+.floating-form {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    padding: 15px;
+    display: none; /* Oculto por defecto */
+    z-index: 1000;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: #dc3545; /* Color rojo para la X */
+    font-size: 24px; /* Tamaño de la X */
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    padding: 0;
+}
+.btn-close:hover {
+    color: #c82333; /* Color más oscuro al pasar el mouse */
+}
+</style>
+
+
+
+<style>
+    .chat-box {
+        max-height: 300px; /* Altura máxima del cuadro de chat */
+        overflow-y: auto; /* Permitir desplazamiento vertical */
+        border: 1px solid #ccc; /* Borde del cuadro de chat */
+        padding: 10px; /* Espaciado interno */
+        background-color: #f9f9f9; /* Color de fondo del cuadro de chat */
+    }
+
+    .chat-message {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+    }
+
+    .chat-message img {
+        width: 30px; /* Ajusta el tamaño de la imagen según sea necesario */
+        height: 30px; /* Ajusta el tamaño de la imagen según sea necesario */
+        border-radius: 50%; /* Para hacer que las imágenes sean circulares */
+        margin-right: 10px; /* Espaciado entre la imagen y el mensaje */
+    }
+
+    .text-right {
+        justify-content: flex-end; /* Alinear mensajes del usuario a la derecha */
+    }
+
+    .text-left {
+        justify-content: flex-start; /* Alinear mensajes del bot a la izquierda */
+    }
+</style>
+
     <script>
-        document.querySelectorAll('.compare-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const productId = this.closest('.product').getAttribute('data-product-id');
-                const productPrice = this.getAttribute('data-price');
+const faqs = {
+    // Minúsculas
+    "hola": "¡Hola! ¿En qué puedo ayudarte hoy?",
+    "ubicacion": "Nuestra dirección es Jr. Jirón Gral. Prado 326, Huánuco 10000.",
+    "telefono": "Puedes contactar al 942 113 752 para más información.",
+    "horario": "Estamos cerrados, pero abrimos a las 10 a.m. del miércoles. ¡Te esperamos!",
+    "más horarios": "Nuestros horarios son de lunes a sábado de 10 a.m. a 6 p.",
+    "domingos cerrados": "Nuestros domingos están cerrados, pero abrimos a las 10 a.m. del miércoles. ¡Te esperamos!",
+    "¿cómo enviar envio delibery un pedido?": "Para enviar un pedido, sigue estos pasos: 1. Compra tus productos en Hilo Rojo. 2. Llena el formulario de contacto y selecciona tu dirección de envío. 3. Elige el método de envío y pago que prefieras. 4. Confirma tu pedido y paga. 5. Recibe tu pedido en la dirección que seleccionaste.",
+    "¿cómo cancelar un pedido?": "Para cancelar un pedido, debes contactar al 942 113 752 y explicar tu razón de cancelación.",
+    "¿cómo hacer un reclamo?": "Para hacer un reclamo, debes contactar al 942 113 752 y",
+    "buenos días": "¡Buenos días! ¿Cómo puedo asistirte en tu búsqueda de regalos?",
+    "buenas tardes": "¡Buenas tardes! Estoy aquí para ayudarte a encontrar el regalo perfecto.",
+    "buenas noches": "¡Buenas noches! Si necesitas algo, no dudes en preguntar.",
+    "¿qué tal?": "¡Todo bien! ¿Y tú? ¿Buscas algo en particular?",
+    "¡saludos!": "¡Saludos! Estoy aquí para ayudarte con cualquier pregunta.",
+    "¿cómo estás?": "Estoy aquí para ayudarte. ¿En qué puedo asistirte?",
+    "¡qué alegría verte!": "¡Qué alegría que estés aquí! ¿Cómo puedo ayudarte hoy?",
+    "¿cómo va todo?": "Todo bien por aquí, ¿y tú? ¿En qué puedo ayudarte?",
+    "¡hola, amigo/a!": "¡Hola, amigo/a! Estoy aquí para asistirte en tus compras.",
+    
+    // Nuevas respuestas sobre productos
+    "flores y plantas": "Ofrecemos una variedad de flores y plantas, incluyendo rosas, orquídeas y ficus.",
+    "rosas": "Nuestras rosas son frescas y vienen en diferentes colores. ¡Perfectas para cualquier ocasión!",
+    "orquídeas": "Las orquídeas son elegantes y hermosas, ideales para regalar o decorar tu hogar.",
+    "ficus": "Los ficus son plantas de interior fáciles de cuidar que añaden un toque verde a cualquier espacio.",
+    
+    "regalos y sorpresas": "Tenemos una amplia gama de regalos y sorpresas, incluyendo peluches, chocolates y globos metálicos.",
+    "peluches": "Nuestros peluches son adorables y vienen en varias formas y tamaños, perfectos para regalar.",
+    "chocolates": "Ofrecemos chocolates de alta calidad, ideales para cualquier celebración o como un dulce detalle.",
+    "globos metálicos": "Los globos metálicos son perfectos para fiestas y celebraciones, ¡hay muchos diseños disponibles!",
+    
+    "embalaje y presentación": "También tenemos opciones de embalaje y presentación, incluyendo listones, papel de regalo, bolsas y cajas.",
+    "listones": "Los listones son perfectos para agregar un toque especial a tus regalos.",
+    "papel de regalo": "Contamos con una variedad de papeles de regalo en diferentes diseños y colores.",
+    "bolsas y cajas": "Ofrecemos bolsas y cajas para presentar tus regalos de manera elegante y práctica.",
 
-                document.getElementById('productId').value = productId;
-                document.getElementById('total').value = productPrice;
-                document.getElementById('compareForm').classList.add('show');
-            });
-        });
+    // Información de servicios
+    "opciones de servicio": "Ofrecemos entrega el mismo día para tu comodidad.",
+    "dirección": "Nuestra dirección es Jr. Jirón Gral. Prado 326, Huánuco 10000.",
+    "teléfono": "Puedes llamarnos al 942 113 752 para más información.",
+    "horario": "Estamos cerrados, pero abrimos a las 10 a.m. del miércoles. ¡Te esperamos!",
+    "más horarios": "Nuestros horarios son de lunes a sábado de 10 a.m. a 6 p.m. y domingos cerrados.",
 
-        function closeForm() {
-            document.getElementById('compareForm').classList.remove('show');
-        }
+    // Mayúsculas
+    "HOLA": "¡Hola! ¿En qué puedo ayudarte hoy?",
+    "UBICACION": "Nuestra dirección es Jr. Jirón Gral. Prado 326, Huánuco 10000.",
+    "TELEFONO": "Puedes contactar al 942 113 752 para más información.",
+    "HORARIO": "Estamos cerrados, pero abrimos a las 10 a.m. del miércoles. ¡Te esperamos!",
+    "MÁS HORARIOS": "Nuestros horarios son de lunes a sábado de 10 a.m. a 6 p.",
+    "DOMINGOS CERRADOS": "Nuestros domingos están cerrados, pero abrimos a las 10 a.m. del miércoles. ¡Te esperamos!",
+    "¿CÓMO ENVIAR ENVIO DELIBERY UN PEDIDO?": "Para enviar un pedido, sigue estos pasos: 1. Compra tus productos en Hilo Rojo. 2. Llena el formulario de contacto y selecciona tu dirección de envío. 3. Elige el método de envío y pago que prefieras. 4. Confirma tu pedido y paga. 5. Recibe tu pedido en la dirección que seleccionaste.",
+    "¿CÓMO CANCELAR UN PEDIDO?": "Para cancelar un pedido, debes contactar al 942 113 752 y explicar tu razón de cancelación.",
+    "¿CÓMO HACER UN RECLAMO?": "Para hacer un reclamo, debes contactar al 942 113 752 y",
+    "BUENOS DÍAS": "¡Buenos días! ¿Cómo puedo asistirte en tu búsqueda de regalos?",
+    "BUENAS TARDES": "¡Buenas tardes! Estoy aquí para ayudarte a encontrar el regalo perfecto.",
+    "BUENAS NOCHES": "¡Buenas noches! Si necesitas algo, no dudes en preguntar.",
+    "¿QUÉ TAL?": "¡Todo bien! ¿Y tú? ¿Buscas algo en particular?",
+    "¡SALUDOS!": "¡Saludos! Estoy aquí para ayudarte con cualquier pregunta.",
+    "¿CÓMO ESTÁS?": "Estoy aquí para ayudarte. ¿En qué puedo asistirte?",
+    "¡QUÉ ALEGRÍA VERTE!": "¡Qué alegría que estés aquí! ¿Cómo puedo ayudarte hoy?",
+    "¿CÓMO VA TODO?": "Todo bien por aquí, ¿y tú? ¿En qué puedo ayudarte?",
+    "¡HOLA, AMIGO/A!": "¡Hola, amigo/a! Estoy aquí para asistirte en tus compras.",
+    
+    // Nuevas respuestas sobre productos
+    "FLORES Y PLANTAS": "Ofrecemos una variedad de flores y plantas, incluyendo rosas, orquídeas y ficus.",
+    "ROSAS": "Nuestras rosas son frescas y vienen en diferentes colores. ¡Perfectas para cualquier ocasión!",
+    "ORQUÍDEAS": "Las orquídeas son elegantes y hermosas, ideales para regalar o decorar tu hogar.",
+    "FICUS": "Los ficus son plantas de interior fáciles de cuidar que añaden un toque verde a cualquier espacio.",
+    
+    "REGALOS Y SORPRESAS": "Tenemos una amplia gama de regalos y sorpresas, incluyendo peluches, chocolates y globos metálicos.",
+    "PELUCHES": "Nuestros peluches son adorables y vienen en varias formas y tamaños, perfectos para regalar.",
+    "CHOCOLATES": "Ofrecemos chocolates de alta calidad, ideales para cualquier celebración o como un dulce detalle.",
+    "GLOBOS METÁLICOS": "Los globos metálicos son perfectos para fiestas y celebraciones, ¡hay muchos diseños disponibles!",
+    
+    "EMBALAJE Y PRESENTACIÓN": "También tenemos opciones de embalaje y presentación, incluyendo listones, papel de regalo, bolsas y cajas.",
+    "LISTONES": "Los listones son perfectos para agregar un toque especial a tus regalos.",
+    "PAPEL DE REGALO": "Contamos con una variedad de papeles de regalo en diferentes diseños y colores.",
+    "BOLSAS Y CAJAS": "Ofrecemos bolsas y cajas para presentar tus regalos de manera elegante y práctica.",
 
-        function filterProducts() {
-        const searchInput = document.getElementById('searchInput').value.toLowerCase();
-        const products = document.querySelectorAll('.product');
-        let found = false; // Variable para verificar si se encontró algún producto
+    // Información de servicios
+    "OPCIONES DE SERVICIO": "Ofrecemos entrega el mismo día para tu comodidad.",
+    "DIRECCIÓN": "Nuestra dirección es Jr. Jirón Gral. Prado 326, Huánuco 10000.",
+    "TELÉFONO": "Puedes llamarnos al 942 113 752 para más información.",
+    "HORARIO": "Estamos cerrados, pero abrimos a las 10 a.m. del miércoles. ¡Te esperamos!",
+    "MÁS HORARIOS": "Nuestros horarios son de lunes a sábado de 10 a.m. a 6 p.m. y domingos cerrados."
+};
 
-        // Crear un nuevo mensaje de "cargando" para la búsqueda actual
-        const chatbotMessage = document.getElementById('chatbotMessage');
-        const loadingMessage = document.createElement('div');
-        loadingMessage.classList.add('chatbot-message', 'loading-message');
-        loadingMessage.innerText = 'Cargando...';
-        chatbotMessage.appendChild(loadingMessage);
 
-        // Simular un retraso para mostrar el mensaje de carga
-        setTimeout(() => {
-            products.forEach(product => {
-                const productName = product.querySelector('h5').innerText.toLowerCase();
-                if (productName.includes(searchInput)) {
-                    product.style.display = '';
-                    found = true; // Se encontró un producto
-                } else {
-                    product.style.display = 'none';
-                }
-            });
+function filterProducts() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const products = document.querySelectorAll('.product');
 
-            // Crear un mensaje de éxito o error para la búsqueda actual
-            const resultMessage = document.createElement('div');
-            resultMessage.classList.add('chatbot-message');
-
-            if (searchInput.trim() !== '') {
-                if (found) {
-                    resultMessage.classList.add('chatbot-success');
-                    resultMessage.innerText = 'Producto(s) encontrado(s) para: "' + searchInput + '". ¡Sigue buscando!';
-                } else {
-                    resultMessage.classList.add('chatbot-error');
-                    resultMessage.innerText = 'No se encontraron productos que coincidan con: "' + searchInput + '". Intenta otro término.';
-                }
-                chatbotMessage.appendChild(resultMessage); // Agregar el mensaje al historial
-            }
-
-            // Eliminar el mensaje de "cargando" una vez que se muestran los resultados
-            loadingMessage.remove();
-        }, 2000); // Retraso de 500 ms para simular carga
-    }
-
-    function closeSearchForm() {
-        document.getElementById('searchForm').classList.remove('show');
-    }
-
-    // Botón flotante de robot
-    document.querySelector('.robot-btn').addEventListener('click', function() {
-        const searchForm = document.getElementById('searchForm');
-        searchForm.classList.toggle('show'); // Alternar la visibilidad del formulario de búsqueda
+    products.forEach(product => {
+        const productName = product.getAttribute('data-name').toLowerCase();
+        product.style.display = productName.includes(searchInput) ? '' : 'none';
     });
+}
 
-    function calculateTotal() {
+document.querySelectorAll('.compare-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const productId = this.closest('.product').getAttribute('data-product-id');
+        const productPrice = this.getAttribute('data-price');
+
+        document.getElementById('productId').value = productId;
+        document.getElementById('total').value = productPrice;
+        document.getElementById('compareForm').classList.add('show');
+    });
+});
+
+function closeForm() {
+    document.getElementById('compareForm').classList.remove('show');
+}
+
+function calculateTotal() {
         const quantity = document.getElementById('quantity').value;
         const price = document.getElementById('total').value;
         document.getElementById('total').value = (quantity * price).toFixed(2);
     }
 
-    // Botón flotante de WhatsApp
-    document.querySelector('.whatsapp-btn').addEventListener('click', function() {
-        window.open('https://wa.me/51967463961', '_blank');
+document.querySelector('.robot-btn').addEventListener('click', function() {
+    const chatbot = document.getElementById('chatbot');
+    chatbot.classList.toggle('show');
+});
+
+document.getElementById('sendButton').addEventListener('click', function() {
+    const input = document.getElementById('chatInput');
+    const userMessage = input.value.trim();
+
+    if (userMessage) {
+        addMessageToChat('Tú: ' + userMessage, 'text-right');
+
+        // Retraso de 3 segundos antes de enviar la respuesta del chatbot
+        setTimeout(() => {
+            const response = getChatbotResponse(userMessage);
+            addMessageToChat('Bot: ' + response.text, 'text-left');
+
+            if (response.suggestions.length > 0) {
+                addMessageToChat('¿PREGUNTA SUGERIDAD SI NO ES LA RESPUESTA ADECUADA: ' + response.suggestions.join(', ') + '?', 'text-left');
+            }
+        }, 3000); // 3000 milisegundos = 3 segundos
+
+        input.value = ''; // Limpiar el campo de entrada
+    } else {
+        alert("Por favor, escribe un mensaje antes de enviar.");
+    }
+});
+
+
+function addMessageToChat(message, alignment, isBot = false) {
+    const chatBox = document.getElementById('chatBox');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'chat-message ' + alignment;
+
+    // Verificar si isBot se recibe correctamente
+    console.log("isBot:", isBot);
+
+    // Crear imagen según el remitente (bot o usuario)
+    const img = document.createElement('img');
+    img.src = isBot ? '/imagenes/chatbot.png' : '/imagenes/usuario.png'; // Asegúrate de que las rutas sean correctas
+    img.className = 'chat-avatar'; // Clase para el estilo de la imagen
+    messageDiv.appendChild(img);
+
+    // Crear el mensaje de texto
+    const textDiv = document.createElement('div');
+    textDiv.className = 'message-text'; // Clase para el estilo del mensaje
+    textDiv.textContent = message;
+    messageDiv.appendChild(textDiv);
+
+    // Añadir el mensaje al chatBox y hacer scroll hacia abajo
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+
+function normalizeString(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function getChatbotResponse(userMessage) {
+    const normalizedUserMessage = normalizeString(userMessage);
+    let bestMatch = '';
+    let highestMatchCount = 0;
+    let suggestions = [];
+
+    for (const question in faqs) {
+        const normalizedQuestion = normalizeString(question);
+        const score = calculateSimilarity(normalizedUserMessage, normalizedQuestion);
+        if (score > highestMatchCount) {
+            highestMatchCount = score;
+            bestMatch = faqs[question];
+            suggestions = [question]; // Reiniciar sugerencias con la mejor coincidencia
+        } else if (score > 0) {
+            suggestions.push(question); // Agregar a las sugerencias si hay coincidencia
+        }
+    }
+
+    return { text: bestMatch || "Lo siento, no tengo una respuesta para eso.", suggestions };
+}
+
+function calculateSimilarity(userMessage, question) {
+    const userWords = userMessage.split(' ');
+    let matchCount = 0;
+
+    userWords.forEach(userWord => {
+        if (question.includes(userWord)) {
+            matchCount++;
+        }
     });
-    </script>
+
+    return matchCount / Math.max(1, question.split(' ').length); // Evitar división por cero
+}
+</script>
+
+
 </body>
 </html>

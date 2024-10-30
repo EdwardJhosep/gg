@@ -66,20 +66,14 @@
             text-decoration: underline;
         }
 
-        /* Estilo para enlaces olvidé mi contraseña */
-        .text-muted {
-            color: #6c757d !important;
-        }
-
-        .text-muted:hover {
-            color: #0056b3 !important;
-            text-decoration: underline;
+        .error-message {
+            color: red;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
 
-    <!-- Menú de Navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -90,7 +84,7 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <div class="navbar-nav">
-                <a href="{{ route('inicio') }}" class="nav-link active text-dark">Inicio</a>
+                    <a href="{{ route('inicio') }}" class="nav-link active text-dark">Inicio</a>
                     <a href="{{ route('productos') }}" class="nav-link text-dark">Compra de Productos</a>
                     <a href="{{ route('nosotros') }}" class="nav-link text-dark">Acerca de Nosotros</a>
                     <a href="{{ route('login') }}" class="nav-link text-dark">Login</a>
@@ -99,39 +93,43 @@
         </div>
     </nav>
 
-    <!-- Contenido Principal -->
     <div class="content">
         <div class="login-container">
             <h2 class="login-title">Iniciar Sesión</h2>
             <form action="{{ route('loginAdmin') }}" method="POST">
-            @csrf
-            <p style="text-align: center; margin: 0; color: red; text-transform: lowercase;">inicio de sesión solo para administradores</p>
+                @csrf
+                <p style="text-align: center; margin: 0; color: red; text-transform: lowercase;">inicio de sesión solo para administradores</p>
+                
                 <div class="mb-3">
                     <label for="dni" class="form-label">DNI</label>
-                    <input type="text" class="form-control" id="dni" name="dni" required>
+                    <input type="text" class="form-control" id="dni" name="dni" required value="{{ old('dni') }}">
+                    @error('dni')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
                 </div>
+                
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="password" name="password" required>
+                    @error('password')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
                 </div>
+                
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
                     <label class="form-check-label" for="rememberMe">Recordarme</label>
                 </div>
+                
                 <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
-    <p>&copy; <?php echo date('Y'); ?> Hilo Rojo. <a href="#" class="footer-link">Desarrollado por Luis Miguel Espinoza laveriano</a></p>
+        <p>&copy; {{ date('Y') }} Hilo Rojo. <a href="#" class="footer-link">Desarrollado por Luis Miguel Espinoza Laveriano</a></p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Script para mostrar el año actual en el footer
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
 </body>
 </html>

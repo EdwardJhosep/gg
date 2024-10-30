@@ -75,6 +75,6 @@ class MenuAdmin extends Controller
     {
         Auth::logout(); // Cierra la sesión del usuario autenticado
         session()->forget('token'); // Eliminar el token de la sesión
-        return view('vistacliente.login'); // Redirige a la página de inicio de sesión
+        return view('welcome'); // Redirige a la página de inicio de sesión
     }
 }

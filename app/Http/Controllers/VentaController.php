@@ -15,7 +15,6 @@ class VentaController extends Controller
             'dni' => 'required|string|max:20',
             'product_id' => 'required|exists:products,id',
             'cantidad' => 'required|integer|min:1',
-            'total' => 'required|numeric|min:0',
         ]);
     
         // Obtener el producto
@@ -28,12 +27,27 @@ class VentaController extends Controller
             ])->withInput(); // Redirigir con errores y mantener la entrada anterior
         }
     
+        // Calcular el total
+// Obtener el precio del producto
+$precio = $producto->precio; // Asegúrate de que el producto tenga este campo
+
+// Calcular el total
+$total = $precio * $request->cantidad;
+
+// Validar el total antes de insertarlo en la base de datos
+if ($total > 9999999999999.99) {
+    return redirect()->route('productos')->withErrors([
+        'total' => 'El valor total es demasiado alto.'
+    ])->withInput(); // Redirigir con errores y mantener la entrada anterior
+}
+
+
         // Crear la venta
         Venta::create([
             'dni' => $request->dni,
             'product_id' => $request->product_id,
             'cantidad' => $request->cantidad,
-            'total' => $request->total,
+            'total' => $total, // Asignar el total calculado
             'estado' => 'pendiente', // Establecer el estado como 'pendiente'
         ]);
     
@@ -53,20 +67,45 @@ class VentaController extends Controller
         // Retorna la vista con los resultados
         return view('welcome', compact('ventas'));
     }
-    public function confirmarVenta($id)
-{
-    // Buscar la venta por ID
-    $venta = Venta::findOrFail($id);
-    
-    // Cambiar el estado a 'confirmado'
-    $venta->estado = 'confirmado';
-    
-    // Guardar los cambios en la base de datos
-    $venta->save();
-    
-    // Redirigir con un mensaje de éxito
-    return redirect()->route('admin.ventas')->with('success', 'Venta confirmada exitosamente.');
-}
 
+    public function confirmarVenta($id)
+    {
+        // Buscar la venta por ID
+        $venta = Venta::findOrFail($id);
+        
+        // Cambiar el estado a 'confirmado'
+        $venta->estado = 'confirmado';
+        
+        // Guardar los cambios en la base de datos
+        $venta->save();
+        
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('admin.ventas')->with('success', 'Venta confirmada exitosamente.');
+    }
+    // eliminar
+    public function destroy($id)
+    {
+        try {
+            // Buscar la venta por ID
+            $venta = Venta::findOrFail($id);
     
+            // Obtener el producto asociado a la venta
+            $producto = Product::findOrFail($venta->product_id);
+    
+            // Sumar la cantidad de la venta al stock del producto
+            $producto->stock += $venta->cantidad;
+            $producto->save(); // Guardar los cambios en el stock
+    
+            // Eliminar la venta de la base de datos
+            $venta->delete();
+    
+            // Redirigir con un mensaje de éxito
+            return redirect()->route('empleado.home')->with('success', 'Venta eliminada exitosamente. El stock del producto ha sido actualizado.');
+        } catch (\Exception $e) {
+            // Redirigir con un mensaje de error
+            return redirect()->route('empleado.home')->with('error', 'Error al eliminar la venta: ' . $e->getMessage());
+        }
+    }
+
+
 }
