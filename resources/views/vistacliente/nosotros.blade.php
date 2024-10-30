@@ -11,7 +11,8 @@
             flex-direction: column;
             min-height: 100vh;
             font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f9f2f2;
+            color: #4b134f;
         }
 
         .content {
@@ -23,10 +24,20 @@
             position: sticky;
             top: 0;
             z-index: 1020;
+            background-color: #ffe8e8;
         }
 
         .navbar-brand h2 {
             font-weight: bold;
+            color: #c94b4b;
+        }
+
+        .nav-link {
+            color: #4b134f !important;
+        }
+
+        .nav-link:hover {
+            color: #c94b4b !important;
         }
 
         .whatsapp-btn,
@@ -38,19 +49,16 @@
             color: white;
             border: none;
             border-radius: 50%;
-            padding: 15px;
+            padding: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .robot-btn {
             bottom: 80px;
-            background-color: #007bff;
+            background-color: #c94b4b;
         }
 
         .whatsapp-btn:hover {
@@ -58,56 +66,56 @@
         }
 
         .robot-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .whatsapp-icon,
-        .robot-icon {
-            width: 24px;
-            height: 24px;
+            background-color: #a83535;
         }
 
         header {
             background: linear-gradient(to right, #c94b4b, #4b134f);
             color: white;
             text-align: center;
-            padding: 50px 20px;
+            padding: 30px 20px;
             margin-bottom: 20px;
         }
 
         footer {
-            background-color: #343a40;
+            background-color: #4b134f;
             color: white;
             position: relative;
             bottom: 0;
             width: 100%;
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+            padding: 10px;
         }
 
         .footer-link {
-            color: white;
+            color: #ffe8e8;
             text-decoration: none;
         }
 
-        .info {
-            margin-top: 20px;
-        }
-
         .info-card {
-            background-color: #fff;
-            padding: 20px;
+            background-color: #fff5f5;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 20px;
+            color: #4b134f;
         }
 
-        h3 {
-            margin-top: 20px;
-        }
+        .iframe-container {
+        position: relative;
+        width: 100%;
+        height: 70vh; /* Ajusta la altura a un 70% de la altura del viewport */
+        overflow: hidden; /* Evita que el contenido se desborde */
+    }
 
-        iframe {
-            border-radius: 8px;
-        }
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; /* Asegura que el iframe use todo el espacio disponible */
+        border: none; /* Elimina el borde del iframe */
+        b
 
         .social-icons {
             margin-top: 10px;
@@ -116,15 +124,27 @@
         .social-icon {
             color: white;
             margin: 0 10px;
-            font-size: 20px;
-            text-decoration: none;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-btn, .robot-btn {
+                font-size: 18px;
+                padding: 10px;
+            }
+            header {
+                padding: 20px 10px;
+            }
+            .navbar-brand h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <!-- Menú de Navegación -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <h2>Hilo Rojo</h2>
@@ -134,37 +154,37 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <div class="navbar-nav">
-                    <a href="{{ route('inicio') }}" class="nav-link active text-dark">Inicio</a>
-                    <a href="{{ route('productos') }}" class="nav-link text-dark">Compra de Productos</a>
-                    <a href="{{ route('nosotros') }}" class="nav-link text-dark">Acerca de Nosotros</a>
-                    <a href="{{ route('login') }}" class="nav-link text-dark">Login</a>
+                    <a href="{{ route('inicio') }}" class="nav-link active">Inicio</a>
+                    <a href="{{ route('productos') }}" class="nav-link">Compra de Productos</a>
+                    <a href="{{ route('nosotros') }}" class="nav-link">Acerca de Nosotros</a>
+                    <a href="{{ route('login') }}" class="nav-link">Login</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Contenido Principal -->
-    <div class="content">
-        <div class="container">
-            <div class="info-card">
-                <p>Tienda de regalos en Huánuco</p>
-                <p><strong>Opciones de servicio:</strong> Ofrece entrega el mismo día</p>
-                <p><strong>Dirección:</strong> Jr. Jirón Gral. Prado 326, Huánuco 10000</p>
-                <p><strong>Teléfono:</strong> 942 113 752</p>
-                <p><strong>Horario:</strong> Cierra pronto ⋅ 8 p.m. ⋅ Abre a las 10 a.m. del mar</p>
-            </div>
-            <h3>Cómo llegar</h3>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d588.5759068163253!2d-76.24417851215046!3d-9.927656712636125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91a7c3f98d99951f%3A0x5f038db0b730b3ee!2sHilo%20Rojo%20Tienda%20de%20Regalos%20y%20Detalles!5e1!3m2!1ses-419!2spe!4v1730165086329!5m2!1ses-419!2spe" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="content container">
+        <div class="info-card">
+            <p>Tienda de regalos en Huánuco</p>
+            <p><strong>Opciones de servicio:</strong> Ofrece entrega el mismo día</p>
+            <p><strong>Dirección:</strong> Jr. Jirón Gral. Prado 326, Huánuco 10000</p>
+            <p><strong>Teléfono:</strong> 942 113 752</p>
+            <p><strong>Horario:</strong> Cierra pronto ⋅ 8 p.m. ⋅ Abre a las 10 a.m. del mar</p>
+        </div>
+        <!-- Sección de Onirix -->
+        <div class="iframe-container">
+            <iframe src="https://player.onirix.com/projects/d85cb3cd6a8c498aa080d727737b5b48/webar?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ1NjYyLCJwcm9qZWN0SWQiOjkyODAyLCJyb2xlIjozLCJpYXQiOjE3MzAzMjY2NDV9.w_GpPbRttWrWlXvYqFvUrIywAYGjKueC-wGb_V03x8I&background=alpha&preview=false&hide_controls=false&ar_button=false" allowfullscreen></iframe>
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="text-center py-3">
-    <p>&copy; <?php echo date('Y'); ?> Hilo Rojo. <a href="#" class="footer-link">Desarrollado por Luis Miguel Espinoza laveriano</a></p>
-    <div class="social-icons">
-            <a href="https://www.facebook.com/tu_pagina" target="_blank" class="social-icon"><i class="bi bi-facebook"></i> Facebook</a>
-            <a href="https://www.instagram.com/suarez_barberstudio" target="_blank" class="social-icon"><i class="bi bi-instagram"></i> Instagram</a>
-            <a href="https://wa.me/51942113752" target="_blank" class="social-icon"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+        <p>&copy; <?php echo date('Y'); ?> Hilo Rojo. <a href="#" class="footer-link">Desarrollado por Luis Miguel Espinoza Laveriano</a></p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/tu_pagina" target="_blank" class="social-icon"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/suarez_barberstudio" target="_blank" class="social-icon"><i class="bi bi-instagram"></i></a>
+            <a href="https://wa.me/51942113752" target="_blank" class="social-icon"><i class="bi bi-whatsapp"></i></a>
         </div>
     </footer>
 

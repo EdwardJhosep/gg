@@ -17,9 +17,10 @@ class MenuAdmin extends Controller
         $productos = Product::all();
         $ventas = Venta::with('product')->get(); // Usamos with para cargar la relación
         $empleados = Empleado::all(); // Recuperar todos los empleados
+        $totalConfirmadas = $ventas->where('estado', 'confirmado')->sum('total'); // Calcula el total de ventas confirmadas
 
         // Pasar los datos a la vista
-        return view('admin.home', compact('productos', 'ventas', 'empleados'));
+        return view('admin.home', compact('productos', 'ventas', 'empleados','totalConfirmadas'));
     }
 
 
@@ -66,7 +67,7 @@ class MenuAdmin extends Controller
     {
         $ventas = Venta::with('product')->get(); // Obtén todas las ventas con el producto relacionado
     
-        return view('admin.ventas', compact('ventas')); // Pasa las ventas a la vista
+        return view('admin.ventas', compact('ventas')); // Pasa tanto las ventas como el total a la vista
     }
     
 

@@ -72,17 +72,19 @@
             background: linear-gradient(to right, #c94b4b, #4b134f);
             color: white;
             text-align: center;
-            padding: 50px 20px;
+            padding: 30px 20px;
+            margin-bottom: 20px;
         }
 
         footer {
-            background-color: #343a40;
+            background-color: #4b134f;
             color: white;
             position: relative;
             bottom: 0;
             width: 100%;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+            padding: 10px;
         }
-
         .footer-link {
             color: white;
             text-decoration: none;
@@ -174,7 +176,6 @@
                 </ul>
             </div>
         @endif
-
         <div class="search-box">
             <input type="text" id="searchInput" class="form-control" placeholder="Buscar productos..." onkeyup="filterProducts()">
         </div>
@@ -187,12 +188,11 @@
                         <p><strong>Precio:</strong> ${{ number_format($product->precio, 2) }}</p>
                         <p><strong>Stock:</strong> {{ $product->stock }}</p>
                         <p>{{ $product->descripcion }}</p>
-                        <button class="btn btn-primary compare-btn" data-price="{{ $product->precio }}">Comparar</button>
+                        <button class="btn btn-primary compare-btn" data-price="{{ $product->precio }}">Comprar</button>
                     </div>
                 </div>
             @endforeach
         </div>
-
         <!-- Formulario Flotante -->
         <div class="floating-form" id="compareForm">
             <h5>Comparar Producto</h5>
@@ -352,31 +352,23 @@ const faqs = {
     "¡qué alegría verte!": "¡Qué alegría que estés aquí! ¿Cómo puedo ayudarte hoy?",
     "¿cómo va todo?": "Todo bien por aquí, ¿y tú? ¿En qué puedo ayudarte?",
     "¡hola, amigo/a!": "¡Hola, amigo/a! Estoy aquí para asistirte en tus compras.",
-    
-    // Nuevas respuestas sobre productos
     "flores y plantas": "Ofrecemos una variedad de flores y plantas, incluyendo rosas, orquídeas y ficus.",
     "rosas": "Nuestras rosas son frescas y vienen en diferentes colores. ¡Perfectas para cualquier ocasión!",
     "orquídeas": "Las orquídeas son elegantes y hermosas, ideales para regalar o decorar tu hogar.",
     "ficus": "Los ficus son plantas de interior fáciles de cuidar que añaden un toque verde a cualquier espacio.",
-    
     "regalos y sorpresas": "Tenemos una amplia gama de regalos y sorpresas, incluyendo peluches, chocolates y globos metálicos.",
     "peluches": "Nuestros peluches son adorables y vienen en varias formas y tamaños, perfectos para regalar.",
     "chocolates": "Ofrecemos chocolates de alta calidad, ideales para cualquier celebración o como un dulce detalle.",
     "globos metálicos": "Los globos metálicos son perfectos para fiestas y celebraciones, ¡hay muchos diseños disponibles!",
-    
     "embalaje y presentación": "También tenemos opciones de embalaje y presentación, incluyendo listones, papel de regalo, bolsas y cajas.",
     "listones": "Los listones son perfectos para agregar un toque especial a tus regalos.",
     "papel de regalo": "Contamos con una variedad de papeles de regalo en diferentes diseños y colores.",
     "bolsas y cajas": "Ofrecemos bolsas y cajas para presentar tus regalos de manera elegante y práctica.",
-
-    // Información de servicios
     "opciones de servicio": "Ofrecemos entrega el mismo día para tu comodidad.",
     "dirección": "Nuestra dirección es Jr. Jirón Gral. Prado 326, Huánuco 10000.",
     "teléfono": "Puedes llamarnos al 942 113 752 para más información.",
     "horario": "Estamos cerrados, pero abrimos a las 10 a.m. del miércoles. ¡Te esperamos!",
     "más horarios": "Nuestros horarios son de lunes a sábado de 10 a.m. a 6 p.m. y domingos cerrados.",
-
-    // Mayúsculas
     "HOLA": "¡Hola! ¿En qué puedo ayudarte hoy?",
     "UBICACION": "Nuestra dirección es Jr. Jirón Gral. Prado 326, Huánuco 10000.",
     "TELEFONO": "Puedes contactar al 942 113 752 para más información.",
@@ -395,24 +387,18 @@ const faqs = {
     "¡QUÉ ALEGRÍA VERTE!": "¡Qué alegría que estés aquí! ¿Cómo puedo ayudarte hoy?",
     "¿CÓMO VA TODO?": "Todo bien por aquí, ¿y tú? ¿En qué puedo ayudarte?",
     "¡HOLA, AMIGO/A!": "¡Hola, amigo/a! Estoy aquí para asistirte en tus compras.",
-    
-    // Nuevas respuestas sobre productos
     "FLORES Y PLANTAS": "Ofrecemos una variedad de flores y plantas, incluyendo rosas, orquídeas y ficus.",
     "ROSAS": "Nuestras rosas son frescas y vienen en diferentes colores. ¡Perfectas para cualquier ocasión!",
     "ORQUÍDEAS": "Las orquídeas son elegantes y hermosas, ideales para regalar o decorar tu hogar.",
     "FICUS": "Los ficus son plantas de interior fáciles de cuidar que añaden un toque verde a cualquier espacio.",
-    
     "REGALOS Y SORPRESAS": "Tenemos una amplia gama de regalos y sorpresas, incluyendo peluches, chocolates y globos metálicos.",
     "PELUCHES": "Nuestros peluches son adorables y vienen en varias formas y tamaños, perfectos para regalar.",
     "CHOCOLATES": "Ofrecemos chocolates de alta calidad, ideales para cualquier celebración o como un dulce detalle.",
     "GLOBOS METÁLICOS": "Los globos metálicos son perfectos para fiestas y celebraciones, ¡hay muchos diseños disponibles!",
-    
     "EMBALAJE Y PRESENTACIÓN": "También tenemos opciones de embalaje y presentación, incluyendo listones, papel de regalo, bolsas y cajas.",
     "LISTONES": "Los listones son perfectos para agregar un toque especial a tus regalos.",
     "PAPEL DE REGALO": "Contamos con una variedad de papeles de regalo en diferentes diseños y colores.",
     "BOLSAS Y CAJAS": "Ofrecemos bolsas y cajas para presentar tus regalos de manera elegante y práctica.",
-
-    // Información de servicios
     "OPCIONES DE SERVICIO": "Ofrecemos entrega el mismo día para tu comodidad.",
     "DIRECCIÓN": "Nuestra dirección es Jr. Jirón Gral. Prado 326, Huánuco 10000.",
     "TELÉFONO": "Puedes llamarnos al 942 113 752 para más información.",

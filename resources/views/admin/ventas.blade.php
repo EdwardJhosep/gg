@@ -193,8 +193,7 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Tabla de ventas confirmadas -->
+        <div class="container">
         <div class="table-title">Ventas Confirmadas</div> <!-- Título de la tabla -->
         <div class="table-container"> <!-- Contenedor para la tabla de confirmadas -->
             <table>

@@ -43,8 +43,6 @@ Route::get('/empleado/home', [MenuEmpleado::class, 'index'])->name('empleado.hom
 
 Route::post('/ventas/store', [VentaController::class, 'store'])->name('ventas.store');
 
-Route::get('/buscar-venta', [VentaController::class, 'buscarVenta'])->name('buscar.venta');
-
-Route::post('/ventas/confirmar/{id}', [VentaController::class, 'confirmarVenta'])->name('confirmar_venta');
 
 Route::post('/ventas/eliminar/{id}', [VentaController::class, 'destroy'])->name('eliminar_venta');
+Route::post('/ventas/confirmar/{id}', [VentaController::class, 'confirmarVenta'])->name('confirmar_venta');

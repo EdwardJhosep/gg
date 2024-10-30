@@ -177,6 +177,10 @@
             <h2>Total Productos</h2>
             <p>{{ $productos->count() }}</p>
         </div>
+        <div class="stat-card">
+            <h2>Total Ganancias</h2>
+            <h1>Ganancia Neto: S/{{ number_format($totalConfirmadas, 2) }}</h1>
+            </div>
     </div>
 
     <div class="chart-container">
