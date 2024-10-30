@@ -90,10 +90,10 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <div class="navbar-nav">
-                    <a href="#" class="nav-link active text-dark">Inicio</a>
-                    <a href="#" class="nav-link text-dark">Compra de Productos</a>
-                    <a href="#" class="nav-link text-dark">Acerca de Nosotros</a>
-                    <a href="#" class="nav-link text-dark">Login</a>
+                <a href="{{ route('inicio') }}" class="nav-link active text-dark">Inicio</a>
+                    <a href="{{ route('productos') }}" class="nav-link text-dark">Compra de Productos</a>
+                    <a href="{{ route('nosotros') }}" class="nav-link text-dark">Acerca de Nosotros</a>
+                    <a href="{{ route('login') }}" class="nav-link text-dark">Login</a>
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; <span id="year"></span> Hilo Rojo. <a href="#" class="footer-link">Desarrollado por</a></p>
+    <p>&copy; <?php echo date('Y'); ?> Hilo Rojo. <a href="#" class="footer-link">Desarrollado por Luis Miguel Espinoza laveriano</a></p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

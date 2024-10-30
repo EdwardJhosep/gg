@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class MenuCliente extends Controller
 {
@@ -13,7 +14,9 @@ class MenuCliente extends Controller
 
     public function productos()
     {
-        return view('vistacliente.productos'); // Página de productos
+        $products = Product::all(); 
+
+        return view('vistacliente.productos', compact('products'));
     }
 
     public function nosotros()

@@ -33,30 +33,39 @@ class ProductController extends Controller
         return redirect()->route('admin.productos')->with('success', 'Producto creado con éxito.');
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'imagen' => 'nullable|image|max:2048', // Cambiar a nullable si no se requiere una nueva imagen
+            'imagen' => 'nullable|image|max:2048', // La imagen es opcional al actualizar
             'stock' => 'required|integer',
             'precio' => 'required|numeric|between:0,999999.99',
             'descripcion' => 'nullable|string',
         ]);
-
-        // Si se proporciona una nueva imagen, se guarda
+    
+        $product = Product::findOrFail($id);
+        $product->nombre = $request->nombre;
+        $product->stock = $request->stock;
+        $product->precio = $request->precio;
+        $product->descripcion = $request->descripcion;
+    
+        // Si se ha subido una nueva imagen
         if ($request->hasFile('imagen')) {
-            $imagePath = $request->file('imagen')->store('imagenes', 'public');
-            // Eliminar la imagen anterior si existe
+            // Elimina la imagen anterior si existe
             if ($product->imagen) {
                 Storage::disk('public')->delete($product->imagen);
             }
-            $product->imagen = $imagePath; // Actualizar la ruta de la imagen
+    
+            // Guarda la nueva imagen en public/imagenes
+            $imagePath = $request->file('imagen')->store('imagenes', 'public');
+            $product->imagen = $imagePath;
         }
-
-        $product->update($request->only(['nombre', 'stock', 'precio', 'descripcion']));
-
-        return redirect()->route('admin.productos')->with('success', 'Producto actualizado con éxito.');
+    
+        $product->save();
+    
+        return redirect()->route('admin.productos')->with('success', '¡Producto actualizado con éxito!');
     }
+    
 
     public function destroy(Product $product)
     {

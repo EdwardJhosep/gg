@@ -160,8 +160,8 @@
 
     <!-- Footer -->
     <footer class="text-center py-3">
-        <p>&copy; <?php echo date('Y'); ?> Hilo Rojo. <a href="#" class="footer-link">Desarrollado por</a></p>
-        <div class="social-icons">
+    <p>&copy; <?php echo date('Y'); ?> Hilo Rojo. <a href="#" class="footer-link">Desarrollado por Luis Miguel Espinoza laveriano</a></p>
+    <div class="social-icons">
             <a href="https://www.facebook.com/tu_pagina" target="_blank" class="social-icon"><i class="bi bi-facebook"></i> Facebook</a>
             <a href="https://www.instagram.com/suarez_barberstudio" target="_blank" class="social-icon"><i class="bi bi-instagram"></i> Instagram</a>
             <a href="https://wa.me/51942113752" target="_blank" class="social-icon"><i class="bi bi-whatsapp"></i> WhatsApp</a>

@@ -24,6 +24,7 @@
             align-items: center;
             background-color: #333;
             padding: 10px 20px;
+            position: relative;
         }
         .nav a {
             color: white;
@@ -145,10 +146,6 @@
             <div class="close-menu" onclick="toggleMenu()">
                 <i class="fas fa-times"></i>
             </div>
-            <a href="{{ route('admin.home') }}">Inicio</a>
-            <a href="{{ route('admin.productos') }}">Productos</a>
-            <a href="{{ route('admin.empleados') }}">Empleados</a>
-            <a href="{{ route('admin.ventas') }}">Ventas</a>
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: white;">Salir</a>
             <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                 @csrf
@@ -157,8 +154,8 @@
     </div>
     <div class="container">
         <!-- Tabla de ventas pendientes -->
-        <div class="table-title">Ventas Pendientes</div> <!-- Título de la tabla -->
-        <div class="table-container"> <!-- Contenedor para la tabla de pendientes -->
+        <div class="table-title">Ventas Pendientes</div>
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -172,7 +169,7 @@
                 </thead>
                 <tbody>
                     @foreach($ventas as $venta)
-                        @if($venta->estado === 'pendiente') <!-- Mostrar solo ventas pendientes -->
+                        @if($venta->estado === 'pendiente') 
                             <tr>
                                 <td>
                                     <img src="{{ asset('storage/' . $venta->product->imagen) }}" alt="{{ $venta->product->nombre }}" width="50">
@@ -195,8 +192,8 @@
         </div>
 
         <!-- Tabla de ventas confirmadas -->
-        <div class="table-title">Ventas Confirmadas</div> <!-- Título de la tabla -->
-        <div class="table-container"> <!-- Contenedor para la tabla de confirmadas -->
+        <div class="table-title">Ventas Confirmadas</div>
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -209,7 +206,7 @@
                 </thead>
                 <tbody>
                     @foreach($ventas as $venta)
-                        @if($venta->estado === 'confirmado') <!-- Mostrar solo ventas confirmadas -->
+                        @if($venta->estado === 'confirmado') 
                             <tr>
                                 <td>
                                     <img src="{{ asset('storage/' . $venta->product->imagen) }}" alt="{{ $venta->product->nombre }}" width="50">
