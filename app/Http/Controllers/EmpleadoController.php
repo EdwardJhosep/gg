@@ -21,7 +21,7 @@ class EmpleadoController extends Controller
     
         Empleado::create([
             'dni' => $request->dni,
-            'tipo' => $request->tipo ?? 'Cajero', // Tipo predeterminado: 'Cajero'
+            'tipo' => $request->tipo ?? 'Cajero', 
             'password' => Hash::make($password), // Asegúrate de encriptar la contraseña
         ]);
     
