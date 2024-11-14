@@ -174,8 +174,7 @@
         </div>
         <!-- Sección de Onirix -->
         <div class="iframe-container">
-            <iframe src="https://player.onirix.com/projects/d85cb3cd6a8c498aa080d727737b5b48/webar?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQ1NjYyLCJwcm9qZWN0SWQiOjkyODAyLCJyb2xlIjozLCJpYXQiOjE3MzAzMjY2NDV9.w_GpPbRttWrWlXvYqFvUrIywAYGjKueC-wGb_V03x8I&background=alpha&preview=false&hide_controls=false&ar_button=false" allowfullscreen></iframe>
-        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d622.3304364170314!2d-76.24435667408923!3d-9.927525933361878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2spe!4v1731622734101!5m2!1ses-419!2spe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>        </div>
     </div>
 
     <!-- Footer -->
